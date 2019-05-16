@@ -64,16 +64,20 @@ namespace DbTest.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
-        {
-            if(ModelState.IsValid)
+        {    
+            if (ModelState.IsValid)
             {
                 var result = await _signManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
-            } else
+                if(result.Succeeded && model.ReturnUrl == null) return RedirectToAction("Index", "Home");
+
+            }
+            else
             {
                 return RedirectToAction("Index", "Home");
             }
 
             ModelState.AddModelError("", "Invalid login attempt");
+
             return View(model);
         }
     }

@@ -28,28 +28,30 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">DbTest</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Home</a>
             </div>
             <li class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <ul style="width: 90%" class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Blogs" asp-action="Index">Blogs</a></li>
                     <li><a asp-area="" asp-controller="Posts" asp-action="Index">Posts</a></li>
                     <li><a asp-area="" asp-controller="Categories" asp-action="Index">Categories</a></li>
                     <li><a asp-area="" asp-controller="PostCategories" asp-action="Index">Post-Categories</a></li>
                     @if (User.Identity.IsAuthenticated)
-                     {
-                        <li><a asp-area="" asp-controller="" asp-action="">@User.Identity.Name</a></li>
-                        <li><form method="post" asp-controller="Account"  asp-action="Logout">
-                                <input type="submit" value="Logout" />
-                            </form></li>
-                     } else
-                     {
-                        <li><a asp-controller="Account" asp-action="Login">Login</a></li>
-                        <li><a asp-controller="Account" asp-action="Register">Register</a></li>
-                     }
-                    </ul>
+                    {
+                        <li style="margin-top:10px; float:right">
+                            <form class="form-group" method="post" asp-controller="Account" asp-action="Logout">
+                                <input class="btn btn-default" type="submit" value="Logout" />
+                            </form>
+                        </li>
+                        <li style="float:right;"><a asp-area="" asp-controller="" asp-action="">@@@User.Identity.Name</a></li>
+                    }
+                    else
+                    {
+                        <li style="float:right;"><a asp-controller="Account" asp-action="Login">Login</a></li>
+                        <li style="float:right;"><a asp-controller="Account" asp-action="Register">Register</a></li>
+                    }
+                </ul>
             </div>
-        </div>
     </nav>
 
     <partial name="_CookieConsentPartial" />
