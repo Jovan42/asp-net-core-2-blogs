@@ -30,7 +30,20 @@ namespace DbTest.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Blog");
+                    b.ToTable("Blogs");
+                });
+
+            modelBuilder.Entity("DbTest.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("DbTest.Models.Post", b =>
@@ -49,7 +62,20 @@ namespace DbTest.Migrations
 
                     b.HasIndex("BlogId");
 
-                    b.ToTable("Post");
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("DbTest.Models.PostCategory", b =>
+                {
+                    b.Property<int>("PostId");
+
+                    b.Property<int>("CategoryId");
+
+                    b.HasKey("PostId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("PostCategory");
                 });
 
             modelBuilder.Entity("DbTest.Models.Post", b =>
@@ -57,6 +83,19 @@ namespace DbTest.Migrations
                     b.HasOne("DbTest.Models.Blog", "Blog")
                         .WithMany("Posts")
                         .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("DbTest.Models.PostCategory", b =>
+                {
+                    b.HasOne("DbTest.Models.Category", "Category")
+                        .WithMany("PostCategory")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DbTest.Models.Post", "Post")
+                        .WithMany("PostCategory")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

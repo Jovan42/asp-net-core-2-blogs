@@ -25,7 +25,7 @@ namespace DbTest.Controllers
         [HttpGet]
         public IEnumerable<Post> GetPost()
         {
-            return _context.Post;
+            return _context.Posts;
         }
 
         // GET: api/PostsApi/5
@@ -37,7 +37,7 @@ namespace DbTest.Controllers
                 return BadRequest(ModelState);
             }
 
-            var post = await _context.Post.FindAsync(id);
+            var post = await _context.Posts.FindAsync(id);
 
             if (post == null)
             {
@@ -91,7 +91,7 @@ namespace DbTest.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Post.Add(post);
+            _context.Posts.Add(post);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetPost", new { id = post.Id }, post);
@@ -106,13 +106,13 @@ namespace DbTest.Controllers
                 return BadRequest(ModelState);
             }
 
-            var post = await _context.Post.FindAsync(id);
+            var post = await _context.Posts.FindAsync(id);
             if (post == null)
             {
                 return NotFound();
             }
 
-            _context.Post.Remove(post);
+            _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
 
             return Ok(post);
@@ -120,7 +120,7 @@ namespace DbTest.Controllers
 
         private bool PostExists(int id)
         {
-            return _context.Post.Any(e => e.Id == id);
+            return _context.Posts.Any(e => e.Id == id);
         }
     }
 }

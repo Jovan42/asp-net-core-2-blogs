@@ -25,7 +25,7 @@ namespace DbTest.Controllers
         [HttpGet]
         public IEnumerable<Blog> GetBlog()
         {
-            return _context.Blog;
+            return _context.Blogs;
         }
 
         // GET: api/BlogsApi/5
@@ -37,7 +37,7 @@ namespace DbTest.Controllers
                 return BadRequest(ModelState);
             }
 
-            var blog = await _context.Blog.FindAsync(id);
+            var blog = await _context.Blogs.FindAsync(id);
 
             if (blog == null)
             {
@@ -91,7 +91,7 @@ namespace DbTest.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Blog.Add(blog);
+            _context.Blogs.Add(blog);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetBlog", new { id = blog.Id }, blog);
@@ -106,13 +106,13 @@ namespace DbTest.Controllers
                 return BadRequest(ModelState);
             }
 
-            var blog = await _context.Blog.FindAsync(id);
+            var blog = await _context.Blogs.FindAsync(id);
             if (blog == null)
             {
                 return NotFound();
             }
 
-            _context.Blog.Remove(blog);
+            _context.Blogs.Remove(blog);
             await _context.SaveChangesAsync();
 
             return Ok(blog);
@@ -120,7 +120,7 @@ namespace DbTest.Controllers
 
         private bool BlogExists(int id)
         {
-            return _context.Blog.Any(e => e.Id == id);
+            return _context.Blogs.Any(e => e.Id == id);
         }
     }
 }

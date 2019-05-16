@@ -10,23 +10,22 @@ using DbTest.Models;
 
 namespace DbTest.Controllers
 {
-    public class PostsController : Controller
+    public class CategoriesController : Controller
     {
         private readonly DataContext _context;
 
-        public PostsController(DataContext context)
+        public CategoriesController(DataContext context)
         {
             _context = context;
         }
 
-        // GET: Posts
+        // GET: Categories
         public async Task<IActionResult> Index()
         {
-            var dataContext = _context.Posts.Include(p => p.Blog);
-            return View(await dataContext.ToListAsync());
+            return View(await _context.Categories.ToListAsync());
         }
 
-        // GET: Posts/Details/5
+        // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +33,39 @@ namespace DbTest.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts
-                .Include(p => p.Blog)
+            var category = await _context.Categories
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (post == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(post);
+            return View(category);
         }
 
-        // GET: Posts/Create
+        // GET: Categories/Create
         public IActionResult Create()
         {
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Id");
             return View();
         }
 
-        // POST: Posts/Create
+        // POST: Categories/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BlogId,Title,Body")] Post post)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(post);
+                _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Id", post.BlogId);
-            return View(post);
+            return View(category);
         }
 
-        // GET: Posts/Edit/5
+        // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +73,22 @@ namespace DbTest.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts.FindAsync(id);
-            if (post == null)
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Id", post.BlogId);
-            return View(post);
+            return View(category);
         }
 
-        // POST: Posts/Edit/5
+        // POST: Categories/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Body")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)
         {
-            if (id != post.Id)
+            if (id != category.Id)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace DbTest.Controllers
             {
                 try
                 {
-                    _context.Update(post);
+                    _context.Update(category);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PostExists(post.Id))
+                    if (!CategoryExists(category.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +113,10 @@ namespace DbTest.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Id", post.BlogId);
-            return View(post);
+            return View(category);
         }
 
-        // GET: Posts/Delete/5
+        // GET: Categories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,31 +124,30 @@ namespace DbTest.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts
-                .Include(p => p.Blog)
+            var category = await _context.Categories
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (post == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(post);
+            return View(category);
         }
 
-        // POST: Posts/Delete/5
+        // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var post = await _context.Posts.FindAsync(id);
-            _context.Posts.Remove(post);
+            var category = await _context.Categories.FindAsync(id);
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PostExists(int id)
+        private bool CategoryExists(int id)
         {
-            return _context.Posts.Any(e => e.Id == id);
+            return _context.Categories.Any(e => e.Id == id);
         }
     }
 }

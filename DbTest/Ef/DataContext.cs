@@ -10,7 +10,24 @@ namespace DbTest.Ef
     public class DataContext : DbContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
-        public DbSet<Blog> Blog { get; set; }
-        public DbSet<Post> Post { get; set; }
-    }  
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Category> Categories { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PostCategory>()
+                .HasKey(bc => new { bc.PostId, bc.CategoryId });
+            modelBuilder.Entity<PostCategory>()
+                .HasOne(bc => bc.Post)
+                .WithMany(b => b.PostCategory)
+                .HasForeignKey(bc => bc.PostId);
+            modelBuilder.Entity<PostCategory>()
+                .HasOne(bc => bc.Category)
+                .WithMany(c => c.PostCategory)
+                .HasForeignKey(bc => bc.CategoryId);
+        }
+
+        public DbSet<DbTest.Models.PostCategory> PostCategory { get; set; }
+    }
 }

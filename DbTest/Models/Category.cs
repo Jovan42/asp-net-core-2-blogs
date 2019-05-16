@@ -5,13 +5,11 @@ using System.Threading.Tasks;
 
 namespace DbTest.Models
 {
-    public class Post
+    public class Category
     {
         public int Id { get; set; }
-        public int BlogId { get; set; }
-        public string Title { get; set; }
-        public string Body { get; set; }
-        public Blog Blog { get; set; }
+        public string Name { get; set; }
+
         public ICollection<PostCategory> PostCategory { get; set; } = new List<PostCategory>();
     }
 }
