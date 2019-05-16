@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using DbTest.Ef;
 using Microsoft.EntityFrameworkCore;
+using DbTest.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace DbTest
 {
@@ -27,8 +29,11 @@ namespace DbTest
         public void ConfigureServices(IServiceCollection services)
         {
             var connection = @"Server=(localdb)\mssqllocaldb;Database=BlogEfDB;Trusted_Connection=True;";
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(connection));
+            
             services.AddMvc();
+
+            services.AddEntityFrameworkSqlServer().AddDbContext<DataContext>(options => options.UseSqlServer(connection));
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<DataContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +52,7 @@ namespace DbTest
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

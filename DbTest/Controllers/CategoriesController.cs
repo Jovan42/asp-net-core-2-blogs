@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DbTest.Ef;
 using DbTest.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DbTest.Controllers
 {
+    [Authorize]
     public class CategoriesController : Controller
     {
         private readonly DataContext _context;
@@ -20,6 +22,7 @@ namespace DbTest.Controllers
         }
 
         // GET: Categories
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Categories.ToListAsync());

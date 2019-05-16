@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DbTest.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DbTest.Ef
 {
-    public class DataContext : DbContext
+    public class DataContext :IdentityDbContext<User>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public DbSet<Blog> Blogs { get; set; }
@@ -16,6 +17,8 @@ namespace DbTest.Ef
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<PostCategory>()
                 .HasKey(bc => new { bc.PostId, bc.CategoryId });
             modelBuilder.Entity<PostCategory>()
@@ -29,5 +32,7 @@ namespace DbTest.Ef
         }
 
         public DbSet<DbTest.Models.PostCategory> PostCategory { get; set; }
+
+        
     }
 }
