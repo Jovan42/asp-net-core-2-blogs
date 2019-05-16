@@ -1,7 +1,7 @@
 ﻿@model DbTest.Models.PostCategory
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = $"Remove {Model.Category.Name} category from {Model.Post.Title} post";
 }
 
 <h2>Delete</h2>
